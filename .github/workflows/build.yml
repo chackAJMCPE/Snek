@@ -9,8 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    # Use the official PPC toolchain image
     container:
       image: devkitpro/devkitppc:latest
 
@@ -18,9 +16,11 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v4
 
-      - name: Install Wii toolchain & libs via dkp-pacman
+      - name: Sync & install libs via dkp-pacman
         run: |
-          # image/font/FAT support
+          # Refresh the package database and upgrade any critical bits
+          dkp-pacman -Sy --noconfirm
+          # Now install image/font/FAT support
           dkp-pacman -S --noconfirm \
             ppc-libpng \
             ppc-freetype \
