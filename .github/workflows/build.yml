@@ -1,8 +1,10 @@
-name: Wii Homebrew CI
-
+name: Build
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
 
 jobs:
   build:
@@ -14,9 +16,9 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Setup devkitPro
-        uses: devkitpro/setup-devkitpro@v2
+        # v1 is the latest release of the setup-devkitpro action
+        uses: devkitpro/setup-devkitpro@v1
         with:
-          # install the core Wii/GameCube compiler and libs
           packages: |
             devkitppc
             libogc
@@ -39,7 +41,7 @@ jobs:
         run: make
 
       - name: Upload built binaries
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: wii-homebrew
           path: |
