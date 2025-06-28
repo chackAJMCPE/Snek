@@ -28,7 +28,7 @@ jobs:
           cd GRRLIB
           make -C GRRLIB clean all install
     
-      - name: Debug: list GRRLIB install
+      - name: Debug list GRRLIB install
         run: |
           ls -R /opt/devkitpro/portlibs/ppc
           grep -R "grrlib.h" /opt/devkitpro/portlibs/ppc/include
