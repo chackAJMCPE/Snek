@@ -9,23 +9,14 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    # this image bundles devkitPPC + libogc + portlibs (png, jpeg, freetype, fat, etc.)
     container:
-      image: devkitpro/devkitppc:latest
+      image: webhdx/devkitppc-libogc2:20250602
 
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
-
-      - name: Sync & install libs via dkp-pacman
-        run: |
-          # Refresh the package database and upgrade any critical bits
-          dkp-pacman -Sy --noconfirm
-          # Now install image/font/FAT support
-          dkp-pacman -S --noconfirm \
-            ppc-libpng \
-            ppc-freetype \
-            ppc-libjpeg-turbo \
-            libfat-ogc
 
       - name: Clone GRRLIB
         run: git clone https://github.com/GRRLIB/GRRLIB.git
