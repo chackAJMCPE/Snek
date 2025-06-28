@@ -1,4 +1,4 @@
-name: Build
+name: Wii Homebrew CI
 
 on:
   push:
@@ -17,6 +17,15 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
+
+      - name: Install Wii toolchain & libs via dkp-pacman
+        run: |
+          # image/font/FAT support
+          dkp-pacman -S --noconfirm \
+            ppc-libpng \
+            ppc-freetype \
+            ppc-libjpeg-turbo \
+            libfat-ogc
 
       - name: Clone GRRLIB
         run: git clone https://github.com/GRRLIB/GRRLIB.git
