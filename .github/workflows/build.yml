@@ -8,22 +8,21 @@ on:
 
 jobs:
   build:
-    name: Build Wii Homebrew
     runs-on: ubuntu-latest
 
-    # Use the official DevkitPro Docker image to avoid pacman errors
+    # Use the official PPC toolchain image
     container:
-      image: devkitpro/devkitpro:latest
+      image: devkitpro/devkitppc:latest
 
     steps:
       - name: Checkout source
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Install Wii toolchain and libs
+      - name: Install Wii toolchain & libs via dkp-pacman
         run: |
-          # Install the core Wii toolchain (devkitppc, libogc, etc.)
+          # wii-dev brings in devkitppc, libogc, etc.
           dkp-pacman -S --noconfirm wii-dev
-          # Install image/font/FAT support
+          # image/font/FAT support
           dkp-pacman -S --noconfirm \
             ppc-libpng \
             ppc-freetype \
