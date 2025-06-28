@@ -20,6 +20,10 @@ jobs:
 
       - name: Clone GRRLIB
         run: git clone https://github.com/GRRLIB/GRRLIB.git
+        
+      - name: Install portlibs dependencies
+        run: dkp-pacman --sync --needed --noconfirm libfat-ogc ppc-libpng ppc-freetype ppc-libjpeg-turbo
+
 
       - name: Build & install GRRLIB
         run: |
