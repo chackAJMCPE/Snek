@@ -1,0 +1,47 @@
+name: Wii Homebrew CI
+
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Wii Homebrew
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+
+      - name: Setup devkitPro
+        uses: devkitpro/setup-devkitpro@v2
+        with:
+          # install the core Wii/GameCube compiler and libs
+          packages: |
+            devkitppc
+            libogc
+
+      - name: Install native dependencies via dkp-pacman
+        run: |
+          dkp-pacman -S --noconfirm \
+            ppc-libpng \
+            ppc-freetype \
+            ppc-libjpeg-turbo \
+            libfat-ogc
+
+      - name: Clone GRRLIB
+        run: git clone https://github.com/GRRLIB/GRRLIB.git
+
+      - name: Build & install GRRLIB
+        run: make -C GRRLIB clean all install
+
+      - name: Build homebrew with Make
+        run: make
+
+      - name: Upload built binaries
+        uses: actions/upload-artifact@v3
+        with:
+          name: wii-homebrew
+          path: |
+            build/*.elf
+            build/*.dol
