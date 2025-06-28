@@ -25,8 +25,8 @@ INCLUDES	:=
 # options for code generation
 #---------------------------------------------------------------------------------
 
-CFLAGS = -g -O2 -Wall $(MACHDEP) $(INCLUDE) \
-    -IC:/devkitPro/portlibs/ppc/include/
+CFLAGS = -g -O2 -Wall $(MACHDEP) $(INCLUDE) -IC:/devkitPro/portlibs/ppc/include/ -I/opt/devkitpro/portlibs/ppc/include/
+
 
 CXXFLAGS	=	$(CFLAGS)
 
