@@ -21,18 +21,17 @@ SOURCES		:=	source
 DATA		:=	data
 INCLUDES	:=
 
-PORTLIBS    ?= /opt/devkitpro/portlibs/ppc
 #---------------------------------------------------------------------------------
 # options for code generation
 #---------------------------------------------------------------------------------
 
-CFLAGS = -g -O2 -Wall $(MACHDEP) -I$(PORTLIBS)/include $(INCLUDE) \
+CFLAGS = -g -O2 -Wall $(MACHDEP) $(INCLUDE) \
     -IC:/devkitPro/portlibs/ppc/include/
 
 CXXFLAGS	=	$(CFLAGS)
 
 # LDFLAGS	=	-g $(MACHDEP) -Wl,-Map,$(notdir $@).map
-LDFLAGS = -g $(MACHDEP) -Wl,-Map,$(notdir $@).map -L$(PORTLIBS)/lib -LC:/devkitPro/portlibs/ppc/lib #i had problems with libs
+LDFLAGS = -g $(MACHDEP) -Wl,-Map,$(notdir $@).map -LC:/devkitPro/portlibs/ppc/lib #i had problems with libs
 
 
 #---------------------------------------------------------------------------------
