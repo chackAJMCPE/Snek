@@ -11,21 +11,19 @@ jobs:
     name: Build Wii Homebrew
     runs-on: ubuntu-latest
 
+    # Use the official DevkitPro Docker image to avoid pacman errors
+    container:
+      image: devkitpro/devkitpro:latest
+
     steps:
       - name: Checkout source
         uses: actions/checkout@v3
 
-      - name: Install devkitPro & wii-dev
+      - name: Install Wii toolchain and libs
         run: |
-          wget https://apt.devkitpro.org/install-devkitpro-pacman \
-            -O install-devkitpro-pacman
-          chmod +x install-devkitpro-pacman
-          sudo ./install-devkitpro-pacman
-          # Install the core Wii toolchain
+          # Install the core Wii toolchain (devkitppc, libogc, etc.)
           dkp-pacman -S --noconfirm wii-dev
-
-      - name: Install additional libs via dkp-pacman
-        run: |
+          # Install image/font/FAT support
           dkp-pacman -S --noconfirm \
             ppc-libpng \
             ppc-freetype \
