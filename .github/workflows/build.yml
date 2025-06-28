@@ -9,28 +9,32 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: webhdx/devkitppc-libogc2:20250602
+
+    # this image bundles devkitPPC + libogc + portlibs (png, jpeg, freetype, fat, etc.)
+    container:
+      image: webhdx/devkitppc-libogc2:20250602
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout source
+        uses: actions/checkout@v4
 
-      - name: Fix permissions for devkitPro
-        run: sudo chown -R root:root /opt/devkitpro
+      - name: Clone GRRLIB
+        run: git clone https://github.com/GRRLIB/GRRLIB.git
 
-      - name: Clone and install GRRLIB
+      - name: Build & install GRRLIB
         run: |
-          git clone https://github.com/GRRLIB/GRRLIB.git
           cd GRRLIB
           make -C GRRLIB clean all install
 
-      # Optional: Verify installation (debugging)
-      - name: Check installed files
-        run: |
-          ls /opt/devkitpro/libogc/include/GRRLIB
-          ls /opt/devkitpro/libogc/lib | grep grrlib
+      - name: Build homebrew via Make
+        run: make
 
-      - run: make  # Build your project
-      - uses: actions/upload-artifact@v4
+      - name: Upload built binaries
+        uses: actions/upload-artifact@v4
         with:
           name: wii-homebrew
-          path: build/*.elf build/*.dol
+          path: |
+            build/*.elf
+            build/*.dol
+
+
