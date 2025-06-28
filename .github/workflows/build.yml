@@ -1,38 +1,28 @@
-name: Wii Homebrew CI
-
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    # this image bundles devkitPPC + libogc + portlibs (png, jpeg, freetype, fat, etc.)
-    container:
-      image: webhdx/devkitppc-libogc2:20250602
+    container: webhdx/devkitppc-libogc2:20250602
 
     steps:
-      - name: Checkout source
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Clone GRRLIB
-        run: git clone https://github.com/GRRLIB/GRRLIB.git
+      - name: Fix permissions for devkitPro
+        run: sudo chown -R root:root /opt/devkitpro
 
-      - name: Build & install GRRLIB
+      - name: Clone and install GRRLIB
         run: |
+          git clone https://github.com/GRRLIB/GRRLIB.git
           cd GRRLIB
           make -C GRRLIB clean all install
 
-      - name: Build homebrew via Make
-        run: make
+      # Optional: Verify installation (debugging)
+      - name: Check installed files
+        run: |
+          ls /opt/devkitpro/libogc/include/GRRLIB
+          ls /opt/devkitpro/libogc/lib | grep grrlib
 
-      - name: Upload built binaries
-        uses: actions/upload-artifact@v4
+      - run: make  # Build your project
+      - uses: actions/upload-artifact@v4
         with:
           name: wii-homebrew
-          path: |
-            build/*.elf
-            build/*.dol
+          path: build/*.elf build/*.dol
