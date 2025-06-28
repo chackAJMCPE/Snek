@@ -15,15 +15,16 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v3
 
-      - name: Setup devkitPro
-        # v1 is the latest release of the setup-devkitpro action
-        uses: devkitpro/setup-devkitpro@v1
-        with:
-          packages: |
-            devkitppc
-            libogc
+      - name: Install devkitPro & wii-dev
+        run: |
+          wget https://apt.devkitpro.org/install-devkitpro-pacman \
+            -O install-devkitpro-pacman
+          chmod +x install-devkitpro-pacman
+          sudo ./install-devkitpro-pacman
+          # Install the core Wii toolchain
+          dkp-pacman -S --noconfirm wii-dev
 
-      - name: Install native dependencies via dkp-pacman
+      - name: Install additional libs via dkp-pacman
         run: |
           dkp-pacman -S --noconfirm \
             ppc-libpng \
@@ -37,7 +38,7 @@ jobs:
       - name: Build & install GRRLIB
         run: make -C GRRLIB clean all install
 
-      - name: Build homebrew with Make
+      - name: Build homebrew via Make
         run: make
 
       - name: Upload built binaries
