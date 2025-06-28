@@ -31,7 +31,7 @@ CFLAGS = -g -O2 -Wall $(MACHDEP) $(INCLUDE) \
 CXXFLAGS	=	$(CFLAGS)
 
 # LDFLAGS	=	-g $(MACHDEP) -Wl,-Map,$(notdir $@).map
-LDFLAGS = -g $(MACHDEP) -Wl,-Map,$(notdir $@).map -LC:/devkitPro/portlibs/ppc/lib #i had problems with libs
+LDFLAGS = -g $(MACHDEP) -Wl,-Map,$(notdir $@).map -LC:/devkitPro/portlibs/ppc/lib -L/opt/devkitpro/portlibs/ppc/lib # updated, so linux building works
 
 
 #---------------------------------------------------------------------------------
