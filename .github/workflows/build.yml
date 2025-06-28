@@ -18,6 +18,14 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v4
 
+      - name: Clone GRRLIB
+        run: git clone https://github.com/GRRLIB/GRRLIB.git
+
+      - name: Build & install GRRLIB
+        run: |
+          cd GRRLIB
+          make -C GRRLIB clean all install
+
       - name: Build homebrew via Make
         run: make
 
