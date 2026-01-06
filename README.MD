@@ -1,3 +1,2 @@
 Snek! is a Snake clone. I made it to test if i can code (made it when i was bored). There may be bugs.
-You can do whatever you want with the wii code, but please credit me
-For Xbox360 build, MIT license is used
+You can do whatever you want with the code, but keep my name in the license (please).
